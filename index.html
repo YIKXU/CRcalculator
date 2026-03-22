@@ -23,8 +23,8 @@
     --common: #5badec;
     --rare: #4ecb71;
     --epic: #a87ffa;
-    --legendary: #f5c842;
-    --champion: #ff7a4a;
+    --legendary: #e8edf5;
+    --champion: #f5c842;
     --red: #ff4d4d;
     --green: #3dca72;
     --radius: 16px;
@@ -121,9 +121,9 @@
   .rb.active-rare .rb-name    { color: var(--rare); }
   .rb.active-epic    { border-color: var(--epic);      background: rgba(168,127,250,0.12); }
   .rb.active-epic .rb-name    { color: var(--epic); }
-  .rb.active-legendary { border-color: var(--legendary); background: rgba(245,200,66,0.12); }
+  .rb.active-legendary { border-color: var(--legendary); background: rgba(232,237,245,0.10); }
   .rb.active-legendary .rb-name { color: var(--legendary); }
-  .rb.active-champion { border-color: var(--champion); background: rgba(255,122,74,0.12); }
+  .rb.active-champion { border-color: var(--champion); background: rgba(245,200,66,0.12); }
   .rb.active-champion .rb-name { color: var(--champion); }
 
   /* Level row */
@@ -276,10 +276,8 @@
 <div class="app">
 
   <header>
-    <div class="crown">👑</div>
     <div class="header-text">
       <h1>Card Upgrade Calculator</h1>
-      <p>Clash Royale · Q4 2025 update</p>
     </div>
   </header>
 
@@ -297,10 +295,10 @@
         <span class="rb-icon">🟣</span><span class="rb-name">Epic</span>
       </div>
       <div class="rb" data-r="legendary" onclick="setRarity('legendary',this)">
-        <span class="rb-icon">🟡</span><span class="rb-name">Legend</span>
+        <span class="rb-icon">⚪</span><span class="rb-name">Legend</span>
       </div>
       <div class="rb" data-r="champion" onclick="setRarity('champion',this)">
-        <span class="rb-icon">🔴</span><span class="rb-name">Champ</span>
+        <span class="rb-icon">🟡</span><span class="rb-name">Champ</span>
       </div>
     </div>
   </div>
@@ -345,10 +343,10 @@
 <script>
 const COSTS = {
   common:    [0,1,2,4,10,20,50,100,200,400,800,1000,1500,2500,3500,5500,7500],
-  rare:      [0,0,0,1,2,4,10,20,50,100,200,300,500,550,750,1000,1300],
+  rare:      [0,0,0,1,2,4,10,20,50,100,200,300,500,550,750,1000,1400],
   epic:      [0,0,0,0,0,0,1,2,4,10,20,30,40,80,100,130,180],
   legendary: [0,0,0,0,0,0,0,0,0,1,2,4,6,9,12,14,20],
-  champion:  [0,0,0,0,0,0,0,0,0,0,0,1,1,5,8,11,16]
+  champion:  [0,0,0,0,0,0,0,0,0,0,0,1,1,5,8,11,15]
 };
 
 let rarity = 'common';
