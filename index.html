@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CR Upgrades">
+<meta name="theme-color" content="#0d1b2e">
+<title>CR Card Upgrade Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1b2e;
+    --surface: #152340;
+    --surface2: #1c2f52;
+    --border: rgba(255,255,255,0.08);
+    --gold: #f5c842;
+    --gold2: #e8a820;
+    --text: #e8edf5;
+    --muted: #7a90b0;
+    --common: #5badec;
+    --rare: #4ecb71;
+    --epic: #a87ffa;
+    --legendary: #f5c842;
+    --champion: #ff7a4a;
+    --red: #ff4d4d;
+    --green: #3dca72;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; background: var(--bg); overflow-x: hidden; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 0);
+  }
+
+  .app {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-top: 8px;
+  }
+  .crown {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(245,200,66,0.35);
+  }
+  .header-text h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px; font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+  }
+  .header-text p {
+    font-size: 12px; color: var(--muted); letter-spacing: 0.3px;
+  }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  /* Rarity selector */
+  .rarity-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+  .rb {
+    padding: 10px 4px 8px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-user-select: none;
+  }
+  .rb .rb-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+  .rb .rb-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+  }
+  .rb.active-common  { border-color: var(--common);    background: rgba(91,173,236,0.12); }
+  .rb.active-common .rb-name  { color: var(--common); }
+  .rb.active-rare    { border-color: var(--rare);      background: rgba(78,203,113,0.12); }
+  .rb.active-rare .rb-name    { color: var(--rare); }
+  .rb.active-epic    { border-color: var(--epic);      background: rgba(168,127,250,0.12); }
+  .rb.active-epic .rb-name    { color: var(--epic); }
+  .rb.active-legendary { border-color: var(--legendary); background: rgba(245,200,66,0.12); }
+  .rb.active-legendary .rb-name { color: var(--legendary); }
+  .rb.active-champion { border-color: var(--champion); background: rgba(255,122,74,0.12); }
+  .rb.active-champion .rb-name { color: var(--champion); }
+
+  /* Level row */
+  .level-row { display: flex; gap: 10px; }
+  .level-field { flex: 1; }
+  .level-field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  select {
+    width: 100%; padding: 12px 10px;
+    background: var(--surface2); color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px; font-weight: 700;
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a90b0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+  }
+  select:focus { outline: none; border-color: var(--gold); }
+
+  /* Cards owned */
+  .owned-wrap { position: relative; }
+  .owned-wrap input {
+    width: 100%; padding: 14px 16px;
+    background: var(--surface2); color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px; font-weight: 700;
+    text-align: center;
+    appearance: none;
+  }
+  .owned-wrap input:focus { outline: none; border-color: var(--gold); }
+  .owned-wrap input::placeholder { color: var(--muted); }
+  .stepper { display: flex; gap: 8px; margin-top: 8px; }
+  .step-btn {
+    flex: 1; padding: 10px;
+    background: var(--surface2); color: var(--text);
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.5px;
+    cursor: pointer; transition: background 0.1s;
+    -webkit-user-select: none;
+  }
+  .step-btn:active { background: var(--surface); transform: scale(0.97); }
+
+  /* Result */
+  #result-wrap { margin-top: 4px; }
+
+  .verdict {
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 10px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+  }
+  .verdict.enough   { background: rgba(61,202,114,0.12); border: 1px solid rgba(61,202,114,0.3); }
+  .verdict.notenough { background: rgba(255,77,77,0.10); border: 1px solid rgba(255,77,77,0.25); }
+  .verdict.neutral  { background: var(--surface); border: 1px solid var(--border); }
+
+  .verdict-left .verdict-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .verdict.enough   .verdict-tag { color: var(--green); }
+  .verdict.notenough .verdict-tag { color: var(--red); }
+  .verdict.neutral  .verdict-tag { color: var(--muted); }
+
+  .verdict-main {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px; font-weight: 800;
+    line-height: 1.1;
+  }
+  .verdict.enough   .verdict-main { color: var(--green); }
+  .verdict.notenough .verdict-main { color: var(--red); }
+  .verdict.neutral  .verdict-main { color: var(--text); }
+
+  .verdict-icon { font-size: 36px; flex-shrink: 0; }
+
+  .metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .metric {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 8px;
+    text-align: center;
+  }
+  .metric .m-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px; font-weight: 800; color: var(--text);
+    display: block;
+  }
+  .metric .m-label {
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.5px; margin-top: 2px; display: block;
+  }
+
+  /* Breakdown toggle */
+  .bk-toggle {
+    width: 100%; padding: 12px;
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; cursor: pointer;
+    transition: all 0.15s;
+    -webkit-user-select: none;
+  }
+  .bk-toggle:active { background: var(--surface2); }
+
+  .breakdown {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .bk-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .bk-row:last-child { border-bottom: none; }
+  .bk-row.bk-head {
+    background: var(--surface2);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .bk-row.bk-total {
+    background: var(--surface2);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px; font-weight: 700; color: var(--gold);
+  }
+  .bk-step { color: var(--muted); font-size: 13px; }
+  .bk-cost { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; }
+
+  .empty-state {
+    text-align: center; padding: 32px 16px;
+    color: var(--muted); font-size: 14px;
+  }
+  .empty-state .empty-icon { font-size: 40px; display: block; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="crown">👑</div>
+    <div class="header-text">
+      <h1>Card Upgrade Calculator</h1>
+      <p>Clash Royale · Q4 2025 update</p>
+    </div>
+  </header>
+
+  <!-- Rarity -->
+  <div class="section-label">Card rarity</div>
+  <div class="card" style="padding:12px;">
+    <div class="rarity-grid">
+      <div class="rb active-common" data-r="common" onclick="setRarity('common',this)">
+        <span class="rb-icon">🔵</span><span class="rb-name">Common</span>
+      </div>
+      <div class="rb" data-r="rare" onclick="setRarity('rare',this)">
+        <span class="rb-icon">🟠</span><span class="rb-name">Rare</span>
+      </div>
+      <div class="rb" data-r="epic" onclick="setRarity('epic',this)">
+        <span class="rb-icon">🟣</span><span class="rb-name">Epic</span>
+      </div>
+      <div class="rb" data-r="legendary" onclick="setRarity('legendary',this)">
+        <span class="rb-icon">🟡</span><span class="rb-name">Legend</span>
+      </div>
+      <div class="rb" data-r="champion" onclick="setRarity('champion',this)">
+        <span class="rb-icon">🔴</span><span class="rb-name">Champ</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Levels -->
+  <div class="section-label">Upgrade range</div>
+  <div class="card">
+    <div class="level-row">
+      <div class="level-field">
+        <label>Current level</label>
+        <select id="fromLevel" onchange="updateToOptions();calc()"></select>
+      </div>
+      <div style="display:flex;align-items:flex-end;padding-bottom:12px;color:var(--muted);font-size:20px;">→</div>
+      <div class="level-field">
+        <label>Target level</label>
+        <select id="toLevel" onchange="calc()"></select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards owned -->
+  <div class="section-label">Cards I have</div>
+  <div class="card">
+    <div class="owned-wrap">
+      <input type="number" id="owned" value="0" min="0" inputmode="numeric" placeholder="0" oninput="calc()">
+    </div>
+    <div class="stepper">
+      <button class="step-btn" onclick="step(-100)">−100</button>
+      <button class="step-btn" onclick="step(-10)">−10</button>
+      <button class="step-btn" onclick="step(-1)">−1</button>
+      <button class="step-btn" onclick="step(1)">+1</button>
+      <button class="step-btn" onclick="step(10)">+10</button>
+      <button class="step-btn" onclick="step(100)">+100</button>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div id="result-wrap"></div>
+
+</div>
+
+<script>
+const COSTS = {
+  common:    [0,1,2,4,10,20,50,100,200,400,800,1000,1500,2500,3500,5500,7500],
+  rare:      [0,0,0,1,2,4,10,20,50,100,200,300,500,550,750,1000,1300],
+  epic:      [0,0,0,0,0,0,1,2,4,10,20,30,40,80,100,130,180],
+  legendary: [0,0,0,0,0,0,0,0,0,1,2,4,6,9,12,14,20],
+  champion:  [0,0,0,0,0,0,0,0,0,0,0,1,1,5,8,11,16]
+};
+
+let rarity = 'common';
+let showBk = false;
+
+function setRarity(r, el) {
+  rarity = r;
+  document.querySelectorAll('.rb').forEach(b => {
+    b.className = 'rb';
+  });
+  el.classList.add('active-' + r);
+  rebuildFrom();
+  calc();
+}
+
+function rebuildFrom() {
+  const from = document.getElementById('fromLevel');
+  const prev = parseInt(from.value) || 1;
+  from.innerHTML = '';
+  for (let i = 1; i <= 15; i++) {
+    const o = document.createElement('option');
+    o.value = i; o.textContent = 'Level ' + i;
+    if (i === Math.min(prev, 15)) o.selected = true;
+    from.appendChild(o);
+  }
+  updateToOptions();
+}
+
+function updateToOptions() {
+  const from = parseInt(document.getElementById('fromLevel').value);
+  const to = document.getElementById('toLevel');
+  const prev = parseInt(to.value) || 16;
+  to.innerHTML = '';
+  for (let i = from + 1; i <= 16; i++) {
+    const o = document.createElement('option');
+    o.value = i; o.textContent = 'Level ' + i;
+    if (i === Math.max(prev, from + 1)) o.selected = true;
+    to.appendChild(o);
+  }
+}
+
+function step(n) {
+  const inp = document.getElementById('owned');
+  const val = Math.max(0, (parseInt(inp.value) || 0) + n);
+  inp.value = val;
+  calc();
+}
+
+function needed(r, from, to) {
+  const c = COSTS[r];
+  let t = 0;
+  for (let i = from + 1; i <= to; i++) t += (c[i] || 0);
+  return t;
+}
+
+function calc() {
+  const from = parseInt(document.getElementById('fromLevel').value);
+  const to = parseInt(document.getElementById('toLevel').value);
+  const owned = Math.max(0, parseInt(document.getElementById('owned').value) || 0);
+  const need = needed(rarity, from, to);
+  const diff = owned - need;
+  const enough = diff >= 0;
+  const levels = to - from;
+  const wrap = document.getElementById('result-wrap');
+
+  if (need === 0) {
+    wrap.innerHTML = `<div class="verdict neutral"><div class="verdict-left"><div class="verdict-tag">No upgrade needed</div><div class="verdict-main">Already there!</div></div><span class="verdict-icon">✅</span></div>`;
+    return;
+  }
+
+  const vClass = enough ? 'enough' : 'notenough';
+  const icon = enough ? '✅' : '❌';
+  const tag = enough ? 'Enough cards' : 'Not enough';
+  const mainTxt = enough
+    ? `+${diff.toLocaleString()} excess`
+    : `${Math.abs(diff).toLocaleString()} more needed`;
+
+  let bkHtml = '';
+  if (showBk) {
+    const costs = COSTS[rarity];
+    let rows = '';
+    for (let i = from + 1; i <= to; i++) {
+      const c = costs[i] || 0;
+      rows += `<div class="bk-row"><span class="bk-step">Lv ${i-1} → ${i}</span><span class="bk-cost">${c.toLocaleString()}</span></div>`;
+    }
+    bkHtml = `<div class="breakdown"><div class="bk-row bk-head"><span>Step</span><span>Cards</span></div>${rows}<div class="bk-row bk-total"><span>Total</span><span>${need.toLocaleString()}</span></div></div>`;
+  }
+
+  wrap.innerHTML = `
+    <div class="verdict ${vClass}">
+      <div class="verdict-left">
+        <div class="verdict-tag">${tag}</div>
+        <div class="verdict-main">${mainTxt}</div>
+      </div>
+      <span class="verdict-icon">${icon}</span>
+    </div>
+    <div class="metrics">
+      <div class="metric"><span class="m-val">${need.toLocaleString()}</span><span class="m-label">Cards needed</span></div>
+      <div class="metric"><span class="m-val">${owned.toLocaleString()}</span><span class="m-label">Cards owned</span></div>
+      <div class="metric"><span class="m-val">${levels}</span><span class="m-label">Levels gained</span></div>
+    </div>
+    <button class="bk-toggle" onclick="showBk=!showBk;calc()">
+      ${showBk ? '▲ Hide' : '▼ Show'} level breakdown
+    </button>
+    ${bkHtml}
+  `;
+}
+
+rebuildFrom();
+calc();
+</script>
+</body>
+</html>
