@@ -324,14 +324,7 @@
     <div class="owned-wrap">
       <input type="number" id="owned" value="0" min="0" inputmode="numeric" placeholder="0" oninput="calc()">
     </div>
-    <div class="stepper">
-      <button class="step-btn" onclick="step(-100)">−100</button>
-      <button class="step-btn" onclick="step(-10)">−10</button>
-      <button class="step-btn" onclick="step(-1)">−1</button>
-      <button class="step-btn" onclick="step(1)">+1</button>
-      <button class="step-btn" onclick="step(10)">+10</button>
-      <button class="step-btn" onclick="step(100)">+100</button>
-    </div>
+
   </div>
 
   <!-- Result -->
@@ -388,24 +381,18 @@ function updateToOptions() {
     if (i === Math.max(prev, from + 1)) o.selected = true;
     to.appendChild(o);
   }
-  enforceMinOwned();
+  autoFillIfBase();
 }
 
-function enforceMinOwned() {
+function autoFillIfBase() {
   const from = parseInt(document.getElementById('fromLevel').value);
   const inp = document.getElementById('owned');
-  const isBase = from === MIN_LEVEL[rarity];
-  const minVal = isBase ? 1 : 0;
-  inp.min = minVal;
-  if ((parseInt(inp.value) || 0) < minVal) { inp.value = minVal; }
+  if (from === MIN_LEVEL[rarity]) { inp.value = 1; }
 }
 
 function step(n) {
-  const from = parseInt(document.getElementById('fromLevel').value);
-  const isBase = from === MIN_LEVEL[rarity];
-  const minVal = isBase ? 1 : 0;
   const inp = document.getElementById('owned');
-  const val = Math.max(minVal, (parseInt(inp.value) || 0) + n);
+  const val = Math.max(0, (parseInt(inp.value) || 0) + n);
   inp.value = val;
   calc();
 }
@@ -418,7 +405,6 @@ function needed(r, from, to) {
 }
 
 function calc() {
-  enforceMinOwned();
   const from = parseInt(document.getElementById('fromLevel').value);
   const to = parseInt(document.getElementById('toLevel').value);
   const owned = Math.max(0, parseInt(document.getElementById('owned').value) || 0);
