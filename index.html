@@ -8,8 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="CR Upgrades">
 <meta name="theme-color" content="#0d1b2e">
 <title>CR Card Upgrade Calculator</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+
 <style>
   :root {
     --bg: #0d1b2e;
@@ -34,7 +33,7 @@
   html, body { height: 100%; background: var(--bg); overflow-x: hidden; }
 
   body {
-    font-family: 'Barlow', sans-serif;
+    font-family: -apple-system, 'SF Pro Text', 'SF Pro Display', BlinkMacSystemFont, sans-serif;
     color: var(--text);
     min-height: 100vh;
     padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 0);
@@ -63,7 +62,7 @@
     box-shadow: 0 4px 16px rgba(245,200,66,0.35);
   }
   .header-text h1 {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
     font-size: 22px; font-weight: 800;
     color: var(--gold);
     letter-spacing: 0.5px;
@@ -74,7 +73,7 @@
   }
 
   .section-label {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
     font-size: 11px; font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
@@ -108,7 +107,7 @@
   }
   .rb .rb-icon { font-size: 20px; display: block; margin-bottom: 4px; }
   .rb .rb-name {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
     font-size: 10px; font-weight: 700;
     letter-spacing: 0.5px;
     text-transform: uppercase;
@@ -135,7 +134,7 @@
     background: var(--surface2); color: var(--text);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
     font-size: 18px; font-weight: 700;
     appearance: none; -webkit-appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a90b0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
@@ -152,7 +151,7 @@
     background: var(--surface2); color: var(--text);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
     font-size: 28px; font-weight: 700;
     text-align: center;
     appearance: none;
@@ -164,7 +163,7 @@
     flex: 1; padding: 10px;
     background: var(--surface2); color: var(--text);
     border: 1px solid var(--border); border-radius: var(--radius-sm);
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
     font-size: 14px; font-weight: 700; letter-spacing: 0.5px;
     cursor: pointer; transition: background 0.1s;
     -webkit-user-select: none;
@@ -186,7 +185,7 @@
   .verdict.neutral  { background: var(--surface); border: 1px solid var(--border); }
 
   .verdict-left .verdict-tag {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
     font-size: 11px; font-weight: 700;
     letter-spacing: 1.5px; text-transform: uppercase;
     margin-bottom: 4px;
@@ -196,7 +195,7 @@
   .verdict.neutral  .verdict-tag { color: var(--muted); }
 
   .verdict-main {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
     font-size: 26px; font-weight: 800;
     line-height: 1.1;
   }
@@ -215,7 +214,7 @@
     text-align: center;
   }
   .metric .m-val {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
     font-size: 22px; font-weight: 800; color: var(--text);
     display: block;
   }
@@ -229,7 +228,7 @@
     width: 100%; padding: 12px;
     background: transparent; color: var(--muted);
     border: 1px solid var(--border); border-radius: var(--radius-sm);
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
     font-size: 13px; font-weight: 700; letter-spacing: 1px;
     text-transform: uppercase; cursor: pointer;
     transition: all 0.15s;
@@ -253,17 +252,17 @@
   .bk-row:last-child { border-bottom: none; }
   .bk-row.bk-head {
     background: var(--surface2);
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
     font-size: 11px; font-weight: 700; letter-spacing: 1px;
     text-transform: uppercase; color: var(--muted);
   }
   .bk-row.bk-total {
     background: var(--surface2);
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
     font-size: 15px; font-weight: 700; color: var(--gold);
   }
   .bk-step { color: var(--muted); font-size: 13px; }
-  .bk-cost { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; }
+  .bk-cost { font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif; font-weight: 700; font-size: 15px; }
 
   .empty-state {
     text-align: center; padding: 32px 16px;
@@ -343,10 +342,10 @@
 <script>
 const COSTS = {
   common:    [0,1,2,4,10,20,50,100,200,400,800,1000,1500,2500,3500,5500,7500],
-  rare:      [0,0,0,1,2,4,10,20,50,100,200,300,500,550,750,1000,1400],
-  epic:      [0,0,0,0,0,0,1,2,4,10,20,30,40,80,100,130,180],
+  rare:      [0,0,0,1,2,4,10,20,50,100,200,300,400,550,750,1000,1400],
+  epic:      [0,0,0,0,0,0,1,2,4,10,20,30,50,70,100,130,180],
   legendary: [0,0,0,0,0,0,0,0,0,1,2,4,6,9,12,14,20],
-  champion:  [0,0,0,0,0,0,0,0,0,0,0,1,1,5,8,11,15]
+  champion:  [0,0,0,0,0,0,0,0,0,0,0,1,2,5,8,11,15]
 };
 
 const MIN_LEVEL = { common:1, rare:3, epic:6, legendary:9, champion:11 };
@@ -389,11 +388,24 @@ function updateToOptions() {
     if (i === Math.max(prev, from + 1)) o.selected = true;
     to.appendChild(o);
   }
+  enforceMinOwned();
+}
+
+function enforceMinOwned() {
+  const from = parseInt(document.getElementById('fromLevel').value);
+  const inp = document.getElementById('owned');
+  const isBase = from === MIN_LEVEL[rarity];
+  const minVal = isBase ? 1 : 0;
+  inp.min = minVal;
+  if ((parseInt(inp.value) || 0) < minVal) { inp.value = minVal; }
 }
 
 function step(n) {
+  const from = parseInt(document.getElementById('fromLevel').value);
+  const isBase = from === MIN_LEVEL[rarity];
+  const minVal = isBase ? 1 : 0;
   const inp = document.getElementById('owned');
-  const val = Math.max(0, (parseInt(inp.value) || 0) + n);
+  const val = Math.max(minVal, (parseInt(inp.value) || 0) + n);
   inp.value = val;
   calc();
 }
@@ -406,6 +418,7 @@ function needed(r, from, to) {
 }
 
 function calc() {
+  enforceMinOwned();
   const from = parseInt(document.getElementById('fromLevel').value);
   const to = parseInt(document.getElementById('toLevel').value);
   const owned = Math.max(0, parseInt(document.getElementById('owned').value) || 0);
