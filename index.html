@@ -349,6 +349,8 @@ const COSTS = {
   champion:  [0,0,0,0,0,0,0,0,0,0,0,1,1,5,8,11,15]
 };
 
+const MIN_LEVEL = { common:1, rare:3, epic:6, legendary:9, champion:11 };
+
 let rarity = 'common';
 let showBk = false;
 
@@ -364,12 +366,13 @@ function setRarity(r, el) {
 
 function rebuildFrom() {
   const from = document.getElementById('fromLevel');
-  const prev = parseInt(from.value) || 1;
+  const prev = parseInt(from.value) || MIN_LEVEL[rarity];
+  const min = MIN_LEVEL[rarity];
   from.innerHTML = '';
-  for (let i = 1; i <= 15; i++) {
+  for (let i = min; i <= 15; i++) {
     const o = document.createElement('option');
     o.value = i; o.textContent = 'Level ' + i;
-    if (i === Math.min(prev, 15)) o.selected = true;
+    if (i === Math.max(min, Math.min(prev, 15))) o.selected = true;
     from.appendChild(o);
   }
   updateToOptions();
