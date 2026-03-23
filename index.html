@@ -150,6 +150,8 @@ font-size: 22px;
 font-weight: 400;
 letter-spacing: 1px;
 appearance: none; -webkit-appearance: none;
+text-align: center;
+text-align-last: center;
 background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘10’ height=‘6’ viewBox=‘0 0 10 6’%3E%3Cpath d=‘M1 1l4 4 4-4’ stroke=’%23555550’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”);
 background-repeat: no-repeat;
 background-position: right 10px center;
@@ -516,10 +518,12 @@ bkHtml = `<div class="breakdown"><div class="bk-row bk-head"><span>Step</span><s
 wrap.innerHTML = `<div class="verdict ${vClass}"> <div class="verdict-tag">${tag}</div> <div class="verdict-main">${mainTxt}</div> </div> <div class="gem-row"> <span class="gem-label"><img class="gem-icon" src="data:image/png;base64,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"> Gems Needed</span> <span class="gem-val">${gems} gems</span> </div> <button class="bk-toggle" onclick="showBk=!showBk;calc()">${showBk ? '▲ Hide' : '▼ Show'} Breakdown</button> ${bkHtml}`;
 }
 
+window.onload = function() {
 rebuildFrom();
 const initCol = RARITY_COLORS[rarity].color;
 document.querySelectorAll(‘select, .owned-input’).forEach(el => { el.style.borderColor = initCol; });
 calc();
+};
 </script>
 
 </body>
